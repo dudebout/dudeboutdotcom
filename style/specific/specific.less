@@ -1,0 +1,91 @@
+html {
+  overflow-y: scroll;
+}
+
+body {
+  padding: 16px;
+  background-color: darken(white, 2%);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+article > section > :last-child {
+  margin-bottom: 0px;
+}
+
+article > section:first-child > header > h1 {
+  margin-top: 0px;
+}
+
+section > header > h1 {
+  font-size: 24px;
+  line-height: 24px;
+  margin-bottom: 12px;
+  margin-top: 24px;
+}
+
+.institution {
+  margin-top: 12px;
+}
+
+article {
+  border-radius: @border-radius-base;
+  border: 1px solid @ddc-border;
+  background-color: @ddc-bgd;
+  color: @ddc-text;
+  padding: 12px;
+  margin-top: 8px;
+  section > pre {
+    margin-bottom: 0px;
+    code {
+      font-size: 16px;
+      line-height: 24px;
+    }
+  }
+}
+
+footer {
+  text-align: center;
+  font-size: 12px;
+  line-height: 18px;
+  margin: 8px;
+  color: @gray;
+  p {
+    margin: auto 0px;
+  }
+}
+
+h1 {
+  font-family: Orbitron;
+  font-weight: 400;
+}
+
+strong {
+    color: #3f3f3f;
+}
+
+pre {
+  background-color: white;
+}
+
+ul {
+  list-style-type: disc;
+}
+
+nav {
+  border-radius: 4px;
+}
+
+@outside-shadow: 3px 3px 3px @grayDark;
+
+.shadow,
+nav,
+article {
+  .box-shadow(@outside-shadow);
+}
+
+@ddc-text: #514e54;
+@ddc-bgd: #f5f6f7;
+@ddc-bgd: #eff0f1;
+@ddc-border: #c5c6c7;
+@ddc-accent: #46a546;

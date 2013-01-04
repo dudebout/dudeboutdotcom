@@ -1,0 +1,21 @@
+<article>
+  <section>
+    <header>
+      <h1>Email
+    <p>
+      <a .link-email href="mailto:nicolas.dudebout@gatech.edu">nicolas.dudebout@gatech.edu
+
+<article>
+  <section>
+    <header>
+      <h1>PGP public key
+    <div>Receive it from keyserver #
+      <em>keys.gnupg.net
+      \ with key id #
+      <em>1E521042#
+      \:
+    <pre>$ gpg --keyserver keys.gnupg.net --recv-keys 1E521042
+    <div>Import an #
+      <a .link-file href="@{StaticR files_nicolas_dudebout_gatech_pgp_pub_asc}">ASCII armored file#
+      \:
+    <pre>$ gpg --import nicolas_dudebout_gatech_pgp_pub.asc

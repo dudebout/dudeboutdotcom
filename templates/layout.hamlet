@@ -1,0 +1,30 @@
+<header .btn-look .btn-banner .btn-custom .shadow>
+  Nicolas Dudebout
+
+<nav .btn-group-navbar>
+  <a :not (Just HomeR == mcurr):href=@{HomeR} :Just HomeR == mcurr:.disabled .btn .btn-custom>
+    <i .icon-home>
+    <span .hidden-phone> Home
+
+  <a :not (Just ResearchR == mcurr):href=@{ResearchR} :Just ResearchR == mcurr:.disabled .btn .btn-custom>
+    <i .icon-cogs>
+    <span .hidden-phone> Research
+
+  <a :not (Just ResumeR == mcurr):href=@{ResumeR} :Just ResumeR == mcurr:.disabled .btn .btn-custom>
+    <i .icon-list-alt>
+    <span .hidden-phone> Resume
+
+  <a :not (Just PublicationsR == mcurr):href=@{PublicationsR} :Just PublicationsR == mcurr:.disabled .btn .btn-custom>
+    <i .icon-book>
+    <span .hidden-phone> Publications
+
+  <a :not (Just ContactR == mcurr):href=@{ContactR} :Just ContactR == mcurr:.disabled .btn .btn-custom>
+    <i .icon-envelope-alt>
+    <span .hidden-phone> Contact
+
+^{widget}
+
+<footer>
+  <p>Copyright © 2009–2013 Nicolas Dudebout. All rights reserved.
+  <p>Last updated: #
+    <time datetime="2013-01-04">January 4, 2013

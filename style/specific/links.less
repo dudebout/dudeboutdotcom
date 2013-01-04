@@ -1,0 +1,23 @@
+[class^="link-"]:after,
+[class*=" link-"]:after {
+  font-family: FontAwesome;
+  font-weight: normal;
+  font-style: normal;
+  text-decoration: inherit;
+  display: inline;
+  width: auto;
+  height: auto;
+  line-height: normal;
+  vertical-align: baseline;
+  background-image: none !important;
+  background-position: 0% 0%;
+  background-repeat: repeat;
+}
+
+.link-external:after { content: "\00a0\f08e"; }
+.link-email:after    { content: "\00a0\f003"; }
+.link-file:after     { content: "\00a0\f016"; }
+
+.link-external:after,
+.link-email:after,
+.link-file:after { font-size: 14px; }

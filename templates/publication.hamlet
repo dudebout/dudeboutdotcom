@@ -1,0 +1,21 @@
+<article .publication>
+  <section .title .clearfix>
+    <div .btn-group .btn-group-vertical .pull-right>
+      <a .btn .btn-custom href="/static/pdfs/#{ide}.pdf">
+        <i .icon-file-alt>
+        <span .hidden-phone>PDF
+      <button type="button" .btn .btn-custom onclick="$('##{ide}_more').myPlugin('##{ide}_button');" id="#{ide}_button" autocomplete="off">
+        <i .icon-info-sign>
+        <span .hidden-phone>More
+    <div .publication-title>#{title}
+    <div .publication-authors>#{authors}
+    <div .publication-venue>#{venue}
+  <section .collapse ##{ide}_more>
+    <section>
+      <header>
+        <h1>Abstract
+      <p .publication-abstract>#{abstract}
+    <section>
+      <header>
+        <h1>BibTeX entry
+      #{bibtex}

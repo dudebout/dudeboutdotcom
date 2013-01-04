@@ -3,4 +3,8 @@
 /favicon.ico FaviconR GET
 /robots.txt RobotsR GET
 
-/ HomeR GET POST
+/ HomeR GET
+/research ResearchR GET
+/resume ResumeR GET
+/publications PublicationsR GET
+/contact ContactR GET

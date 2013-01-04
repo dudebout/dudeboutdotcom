@@ -67,6 +67,10 @@ instance Yesod App where
         master <- getYesod
         mmsg <- getMessage
 
+        mcurrSub <- getCurrentRoute
+        toMaster <- getRouteToMaster
+        let mcurr = fmap toMaster mcurrSub
+
         -- We break up the default layout into two components:
         -- default-layout is the contents of the body tag, and
         -- default-layout-wrapper is the entire page. Since the final
@@ -74,10 +78,11 @@ instance Yesod App where
         -- you to use normal widget features in default-layout.
 
         pc <- widgetToPageContent $ do
-            $(widgetFile "normalize")
-            addStylesheet $ StaticR css_bootstrap_css
-            $(widgetFile "default-layout")
-        hamletToRepHtml $(hamletFile "templates/default-layout-wrapper.hamlet")
+            addStylesheet $ StaticR css_dudeboutdotcom_css
+            addScript $ StaticR js_jquery_min_js
+            addScript $ StaticR js_dudeboutdotcom_js
+            $(widgetFile "layout")
+        hamletToRepHtml $(hamletFile "templates/wrapper.hamlet")
 
     -- This is done to provide an optimization for serving static files from
     -- a separate domain. Please see the staticRoot setting in Settings.hs

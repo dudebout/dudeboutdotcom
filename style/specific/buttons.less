@@ -1,0 +1,76 @@
+.btn-look {
+  display: inline-block;
+  padding: 6px 13px;
+  margin-bottom: 0;
+  font-size: @font-size-base;
+  line-height: @line-height-base;
+  text-align: center;
+  vertical-align: middle;
+  border: 1px solid #ccc;
+  border-radius: @border-radius-base;
+  .box-shadow(inset 0 1px 0 rgba(255,255,255,.25));
+  &.shadow {
+    .box-shadow(~"inset 0 1px 0 rgba(255,255,255,.25), @{outside-shadow}");
+  }
+}
+
+.buttonLookBackground(@background-start, @background-end, @text-color: #fff, @text-shadow: 0 -1px 0 rgba(0,0,0,.25)) {
+  color: @text-color;
+  text-shadow: @text-shadow;
+  #gradient > .vertical(@background-start, @background-end);
+  border-color: darken(@background-end, 7.5%);
+}
+
+.btn-custom {
+  .buttonLookBackground(#808080, #464646);
+  font-family: Orbitron;
+  &.btn {
+    .buttonBackground(#808080, #464646);
+    &:active {
+      .box-shadow(inset 2px 2px 3px rgba(0,0,0,0.3));
+    }
+    &.active,
+    &[disabled],
+    &.disabled,
+    fieldset[disabled] & {
+      color: lighten(@ddc-accent, 25%);
+      text-shadow: 0 0 1px lighten(@ddc-accent, 5%);
+      .opacity(100);
+      .box-shadow(inset 2px 2px 3px rgba(0,0,0,0.3));
+    }
+  }
+}
+
+.btn-banner {
+  .box-sizing(border-box);
+  width: 100%;
+  padding: 12px;
+  margin: 0 auto;
+  margin-bottom: 8px;
+  font-size: 24px;
+  text-align: left;
+}
+
+.btn-group-navbar {
+  display: table;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.btn-group-navbar > .btn + .btn {
+  border-left: 0px;
+}
+
+.btn-group-navbar > .btn {
+  border-radius: 0px;
+  display: table-cell;
+  width: 17%;
+  &:first-child {
+    border-top-left-radius: @border-radius-base;
+    border-bottom-left-radius: @border-radius-base;
+  }
+  &:last-child {
+    border-top-right-radius: @border-radius-base;
+    border-bottom-right-radius: @border-radius-base;
+  }
+}
