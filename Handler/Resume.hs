@@ -3,8 +3,8 @@
 module Handler.Resume where
 
 import Import
-import Data.Text (unpack)
 import Data.Yaml
+import Data.List (intercalate)
 import Data.Aeson.TH
 import Text.Blaze
 import qualified Text.Blaze.Html5 as H
@@ -14,21 +14,39 @@ import Data.Time (Day)
 import Data.Time.Format (readTime, formatTime)
 import Text.Printf (printf)
 import Data.Maybe (fromJust)
-
 import Tools
+import Handler.Generic (Composer)
+import Handler.Markdown (markdownToHtml)
+import qualified Data.Text.Encoding as E (encodeUtf8)
 
-getResumeR :: Handler RepHtml
-getResumeR = do
-  ext <- getExtra
-  defaultLayout $ do
-    setTitle "Resume"
-    content <- liftIO $ resumeWidget $ unpack (contentDir ext) ++ "/resume.yaml"
-    $(widgetFile "resume")
 
-resumeWidget :: String -> IO Html
-resumeWidget filepath = do
-  x <- decodeFile filepath
-  return $ resume $ fromJust x
+resumeComposer :: Composer
+resumeComposer contentRaw = resumeWidget $ fromJust $ decode $ E.encodeUtf8 contentRaw
+
+resumeWidget :: Resume -> Widget
+resumeWidget (Resume schools companies skills) = $(widgetFile "resume")
+
+prettifyDate :: String -> String
+prettifyDate "Present" = "Present"
+prettifyDate d         = formatTime defaultTimeLocale "%m/%Y" day
+    where day = readTime defaultTimeLocale "%b %Y" d :: Day
+
+formatDateRange :: DateRange -> Html
+formatDateRange (DateRange (Date s) (Date e)) = toHtml $ intercalate "–" $ map prettifyDate [s, e]
+
+formatGPA :: Diploma -> Html
+formatGPA dip = toHtml $ (printf (if isInt g then "GPA: %.1f/4.0"
+                                     else  "GPA: %.2f/4.0") g :: String)
+    where isInt x = x == fromInteger (round x)
+          g = gpa dip
+
+formatInstitution :: Institution -> Html
+formatInstitution (Institution n l) = H.h2 $ do
+    toHtml n
+    H.span ! A.class_ "subh2" $ toHtml $ ", " ++ l
+
+formatRole :: String -> Html
+formatRole = markdownToHtml
 
 data Date = Date String deriving (Show)
 
@@ -56,72 +74,13 @@ data Position = Position { role            :: String
                          } deriving (Show)
 
 data Company = Company { companyInstitution :: Institution
-                       , companyPosition    :: Position
+                       , companyPositions   :: [Position]
                        } deriving (Show)
 
-data Resume = Resume { education  :: [School]
-                     , experience :: [Company]
+data Resume = Resume { education         :: [School]
+                     , experience        :: [Company]
+                     , programmingSkills :: [String]
                      } deriving (Show)
-
-date :: Date -> Html
-date (Date d) = H.span $ toHtml $ formatDate d
-
-formatDate :: String -> String
-formatDate "Present" = "Present"
-formatDate d         = formatTime defaultTimeLocale "%m/%Y" day
-    where day = readTime defaultTimeLocale "%b %Y" d :: Day
-
-dateRange :: DateRange -> Html
-dateRange (DateRange s e) = H.div ! A.class_ "pull-right" $ do
-                              date s
-                              _ <- "–"
-                              date e
-
-diploma :: Diploma -> Html
-diploma (Diploma deg g _ dr) = H.div ! A.class_ "diploma clearfix" $ do
-  dateRange dr
-  H.div $ do
-    toHtml deg
-    H.span ! A.class_ "gpa hidden-phone" $ toHtml $ formatGPA g
-
-formatGPA :: Float -> String
-formatGPA = printf "GPA: %.1f/4.0"
-
-institution :: Institution -> Html
-institution (Institution n l) = H.span $ do
-                                H.span ! A.class_ "instiname" $ toHtml n
-                                _ <- ", "
-                                toHtml l
-
-school :: School -> Html
-school (School i ds) = do
-  H.div $ institution i
-  H.ul ! A.class_ "list-unstyled" $ mconcat $ map (H.li . diploma) ds
-
-position :: Position -> Html
-position (Position r mas dr) = H.div ! A.class_ "clearfix" $ do
-  dateRange dr
-  H.div $ toHtml r
-  case mas of
-    Nothing -> ""
-    Just as  -> H.ul $ mconcat $ map (H.li . toHtml) as
-
-company :: Company -> Html
-company (Company i p) = do
-  H.div $ institution i
-  position p
-
-institli :: Html -> Html
-institli = H.li ! A.class_ "institution"
-
-resume :: Resume -> Html
-resume (Resume edu xp) = do
-  H.section $ do
-    H.header $ H.h1 "Education"
-    H.ul ! A.class_ "list-unstyled" $ mconcat $ map (institli . school) edu
-  H.section $ do
-    H.header $ H.h1 "Experience"
-    H.ul ! A.class_ "list-unstyled" $ mconcat $ map (institli . company) xp
 
 $(deriveJSON id ''Date)
 $(deriveJSON id ''DateRange)

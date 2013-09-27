@@ -6,29 +6,26 @@ import Import
 import Text.Blaze.Html5 ((!))
 import qualified Text.Blaze.Html5 as H (span, a)
 import qualified Text.Blaze.Html5.Attributes as A (href, class_)
-import Text.Parsec.String (parseFromFile)
+import Text.Parsec.Text ()
+import Text.Parsec (parse)
 import Text.BibTeX.Parse (splitAuthorList, skippingLeadingSpace, file)
 import Text.BibTeX.Entry (T, entryType, identifier, fields)
 import qualified Text.BibTeX.Format as F
 import Data.Maybe (fromMaybe)
-import Data.Text (unpack)
 import Data.List (intersperse, intercalate)
 import Text.Highlighting.Kate (highlightAs, formatHtmlBlock, defaultFormatOpts)
+import Handler.Generic (Composer)
+import qualified Data.Text as T (unpack)
 
-getPublicationsR :: Handler RepHtml
-getPublicationsR = do
-		 ext <- getExtra
-		 defaultLayout $ do
-                     setTitle "Publications"
-                     res <- liftIO $ parseFromFile (skippingLeadingSpace file) $ unpack (contentDir ext) ++ "/dudebout.bib"
-                     let entries = case res of
-                                     Left _ -> error "failed to parse"
-                                     Right parsedEntries -> parsedEntries
-                         pubs = map publiWidget entries
-                     $(widgetFile "publications")
+publicationsComposer :: Composer
+publicationsComposer contentRaw = let res = parse (skippingLeadingSpace file) "publication handler" $ T.unpack contentRaw
+                                      entries = case res of
+                                                  Left _ -> error "failed to parse"
+                                                  Right parsedEntries -> parsedEntries
+                                  in mapM_ publicationWidget entries
 
-publiWidget :: T -> Widget
-publiWidget ent =
+publicationWidget :: T -> Widget
+publicationWidget ent =
   let typ              = entryType ent
       ide              = filter (/= ':') $ identifier ent
       entLookup        = (`bibtexLookup` ent)
@@ -36,8 +33,10 @@ publiWidget ent =
       title            = toHtml $ entLookup "title"
       authors          = toHtml $ intersperse ", " $ map formatAuthor auths
       venue            = formatVenue ent
+      maybeRepository  = lookup "repository" $ fields ent
+      maybeCopyright   = lookup "copyright" $ fields ent
       abstract         = entLookup "abstract"
-      fieldsNoAbstract = filter (\(x, _) -> x /= "abstract") $ fields ent
+      fieldsNoAbstract = filter (\(x, _) -> not $ x `elem` ["abstract", "repository", "copyright"]) $ fields ent
       bibtex           = toHtml $ formatHtmlBlock defaultFormatOpts
                         $ highlightAs "bibtex" $ F.entry ent{fields = fieldsNoAbstract}
   in $(widgetFile "publication")
@@ -49,8 +48,12 @@ knownAuthors = [ ("Dudebout, Nicolas", H.span ! A.class_ "me")
 
 knownEntryTypes :: [(String, T -> String)]
 knownEntryTypes = [ ("MastersThesis", \entry -> "Master's Thesis, " ++ "school" `bibtexLookup` entry)
+                  , ("Misc", miscFormatting)
                   , ("InProceedings", ("booktitle" `bibtexLookup`))
                   ]
+    where miscFormatting entry = case "howpublished" `bibtexLookup` entry of
+                                   "PhD Proposal" -> "PhD Proposal, " ++ "school" `bibtexLookup` entry
+                                   _              -> "unknown_howpublished"
 
 formatAuthor :: String -> Html
 formatAuthor auth = fromMaybe id (lookup auth knownAuthors) $ toHtml $ flipAndShortenName auth
@@ -58,10 +61,10 @@ formatAuthor auth = fromMaybe id (lookup auth knownAuthors) $ toHtml $ flipAndSh
 formatVenue :: T -> Html
 formatVenue entry = toHtml $ intercalate ", " [venue entry, "year" `bibtexLookup` entry]
     where type_ = entryType entry
-          venue = fromMaybe (const "NOtype") $ lookup type_ knownEntryTypes
+          venue = fromMaybe (const "unknown_type") $ lookup type_ knownEntryTypes
 
 bibtexLookup :: String -> T -> String
-bibtexLookup fieldName entry = fromMaybe ("NO" ++ fieldName) $ lookup fieldName $ fields entry
+bibtexLookup fieldName entry = fromMaybe ("unknown_" ++ fieldName) $ lookup fieldName $ fields entry
 
 flipAndShortenName :: String -> String
 flipAndShortenName name =

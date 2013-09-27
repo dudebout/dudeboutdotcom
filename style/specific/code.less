@@ -1,0 +1,51 @@
+code,
+pre {
+  #font > #family > .monospace;
+}
+
+// Blocks of code
+pre {
+  display: block;
+  padding: (@line-height-base - 1) / 2;
+  margin: 0 0 @line-height-base / 2;
+  margin: 0;
+  font-size: @font-size-base - 1; // 14px to 13px
+  line-height: @line-height-base;
+  word-break: break-all;
+  word-wrap: break-word;
+  white-space: pre;
+  white-space: pre-wrap;
+  background-color: white;
+  border: 1px solid #ccc; // IE8 fallback
+  border: 1px solid rgba(0,0,0,.15);
+  border-radius: @border-radius-base;
+
+  // Make prettyprint styles more spaced out for readability
+  &.prettyprint {
+    margin-bottom: @line-height-base;
+  }
+
+  // Account for some code outputs that place code tags in pre tags
+  code {
+    padding: 0;
+    color: inherit;
+    white-space: pre;
+    white-space: pre-wrap;
+    background-color: transparent;
+    border: 0;
+  }
+}
+
+
+:not(a) :not(pre) > code {
+  background-color: white;
+  padding: 1px 4px;
+  border: 1px solid @ddc-border;
+  border-radius: @border-radius-base;
+}
+
+// Enable scrollable blocks of code
+.pre-scrollable {
+  max-height: 340px;
+  overflow-y: scroll;
+}

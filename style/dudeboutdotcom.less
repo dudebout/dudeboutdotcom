@@ -1553,67 +1553,6 @@ address {
   line-height: @line-height-base;
 }
 //
-// Code (inline and blocK)
-// --------------------------------------------------
-
-
-// Inline and block code styles
-code,
-pre {
-  padding: 0 3px 2px;
-  #font > #family > .monospace;
-  font-size: @font-size-base - 2;
-  color: @grayDark;
-  border-radius: 4px;
-}
-
-// Inline code
-code {
-  padding: 2px 4px;
-  color: #d14;
-  background-color: #f7f7f9;
-  border: 1px solid #e1e1e8;
-  white-space: nowrap;
-}
-
-// Blocks of code
-pre {
-  display: block;
-  padding: (@line-height-base - 1) / 2;
-  margin: 0 0 @line-height-base / 2;
-  font-size: @font-size-base - 1; // 14px to 13px
-  line-height: @line-height-base;
-  word-break: break-all;
-  word-wrap: break-word;
-  white-space: pre;
-  white-space: pre-wrap;
-  background-color: #f5f5f5;
-  border: 1px solid #ccc; // IE8 fallback
-  border: 1px solid rgba(0,0,0,.15);
-  border-radius: @border-radius-base;
-
-  // Make prettyprint styles more spaced out for readability
-  &.prettyprint {
-    margin-bottom: @line-height-base;
-  }
-
-  // Account for some code outputs that place code tags in pre tags
-  code {
-    padding: 0;
-    color: inherit;
-    white-space: pre;
-    white-space: pre-wrap;
-    background-color: transparent;
-    border: 0;
-  }
-}
-
-// Enable scrollable blocks of code
-.pre-scrollable {
-  max-height: 340px;
-  overflow-y: scroll;
-}
-//
 // Component animations
 // --------------------------------------------------
 
@@ -2379,27 +2318,43 @@ html {
 
 body {
   padding: 16px;
+  background-image: url('../img/kindajean.png');
   background-color: darken(white, 2%);
   margin-left: auto;
   margin-right: auto;
 }
 
-article > section > :last-child {
-  margin-bottom: 0px;
+p {
+  text-align: justify;
+  margin-bottom: 12px;
 }
 
-article > section:first-child > header > h1 {
+article > section:first-child > h1 {
   margin-top: 0px;
 }
 
-section > header > h1 {
+section > h1 {
   font-size: 24px;
   line-height: 24px;
   margin-bottom: 12px;
   margin-top: 24px;
 }
 
-.institution {
+h2 {
+  font-size: 16px;
+  line-height: 24px;
+  margin-bottom: 0px;
+  margin-top: 24px;
+  font-family: @font-family-serif;
+  font-weight: bold;
+}
+
+.subh2 {
+  font-family: @font-family-sans-serif;
+  font-weight: normal;
+}
+
+.institution, .skillset {
   margin-top: 12px;
 }
 
@@ -2420,12 +2375,12 @@ article {
 }
 
 footer {
-  text-align: center;
-  font-size: 12px;
-  line-height: 18px;
   margin: 8px;
-  color: @gray;
   p {
+    font-size: 12px;
+    line-height: 18px;
+    color: @gray;
+    text-align: center;
     margin: auto 0px;
   }
 }
@@ -2437,10 +2392,6 @@ h1 {
 
 strong {
     color: #3f3f3f;
-}
-
-pre {
-  background-color: white;
 }
 
 ul {
@@ -2459,45 +2410,89 @@ article {
   .box-shadow(@outside-shadow);
 }
 
+
 @ddc-text: #514e54;
 @ddc-bgd: #f5f6f7;
 @ddc-bgd: #eff0f1;
 @ddc-border: #c5c6c7;
 @ddc-accent: #46a546;
-.pull-right {
+
+// Recreates the illusion of a paragraph from multiple paragraphs and blocks intertwined
+.meta-p {
+  margin-bottom: 12px;
+  > p {
+    margin-bottom: 0;
+  }
+}
+
+section:not(.title) + section {
+  padding-top: 24px;
+}
+
+:last-child {
+  margin-bottom: 0;
+}
+
+:not(h1):first-child {
+  margin-top: 0;
+}
+
+section + section > h1 {
+  margin-top: 0;
+}
+
+.position-title, .diploma-title {
+  font-style: italic;
+  em {
+    font-style: normal;
+  }
+}
+
+.filename {
+  font-family: @font-family-monospace;
+}.pull-right {
   margin-left: @line-height-base - @font-size-base;
 }
 
 .pull-left {
   margin-right: @line-height-base - @font-size-base;
 }
-[class^="link-"]:after,
-[class*=" link-"]:after {
-  font-family: FontAwesome;
-  font-weight: normal;
-  font-style: normal;
-  text-decoration: inherit;
-  display: inline;
-  width: auto;
-  height: auto;
-  line-height: normal;
-  vertical-align: baseline;
-  background-image: none !important;
-  background-position: 0% 0%;
-  background-repeat: repeat;
+.link-type-icon(@code) {
+  &:after {
+    font-family: FontAwesome;
+    font-weight: normal;
+    font-style: normal;
+    text-decoration: inherit;
+    display: inline;
+    width: auto;
+    height: auto;
+    line-height: normal;
+    vertical-align: baseline;
+    background-image: none !important;
+    background-position: 0% 0%;
+    background-repeat: repeat;
+
+    font-size: 14px;
+    content: "\00a0@{code}";
+  }
 }
 
-.link-external:after { content: "\00a0\f08e"; }
-.link-email:after    { content: "\00a0\f003"; }
-.link-file:after     { content: "\00a0\f016"; }
+a[href^="http://"]:not([href^="http://dudebout.com/"]):not([href^="http://localhost:3000/"]) {
+  .link-type-icon ("\f08e");
+}
 
-.link-external:after,
-.link-email:after,
-.link-file:after { font-size: 14px; }
+a[href$=".pdf"]:not(.btn),
+a[href$=".asc"] {
+  .link-type-icon("\f016");
+}
+
+a[href^="mailto:"] {
+  .link-type-icon("\f003");
+}
 .title {
 
   .publication-title {
-    font-family: 'Droid Serif';
+    font-family: @font-family-serif;
     font-weight: bold;
   }
 
@@ -2523,8 +2518,9 @@ article {
   font-style: italic;
 }
 
-.instiname {
+.instiname, .skillsetname {
   font-family: @font-family-serif;
+  font-weight: bold;
 }
 
 .diploma {
@@ -2534,6 +2530,57 @@ article {
 .gpa {
   position: absolute;
   right: 25%;
+}
+code,
+pre {
+  #font > #family > .monospace;
+}
+
+// Blocks of code
+pre {
+  display: block;
+  padding: (@line-height-base - 1) / 2;
+  margin: 0 0 @line-height-base / 2;
+  margin: 0;
+  font-size: @font-size-base - 1; // 14px to 13px
+  line-height: @line-height-base;
+  word-break: break-all;
+  word-wrap: break-word;
+  white-space: pre;
+  white-space: pre-wrap;
+  background-color: white;
+  border: 1px solid #ccc; // IE8 fallback
+  border: 1px solid rgba(0,0,0,.15);
+  border-radius: @border-radius-base;
+
+  // Make prettyprint styles more spaced out for readability
+  &.prettyprint {
+    margin-bottom: @line-height-base;
+  }
+
+  // Account for some code outputs that place code tags in pre tags
+  code {
+    padding: 0;
+    color: inherit;
+    white-space: pre;
+    white-space: pre-wrap;
+    background-color: transparent;
+    border: 0;
+  }
+}
+
+
+:not(a) :not(pre) > code {
+  background-color: white;
+  padding: 1px 4px;
+  border: 1px solid @ddc-border;
+  border-radius: @border-radius-base;
+}
+
+// Enable scrollable blocks of code
+.pre-scrollable {
+  max-height: 340px;
+  overflow-y: scroll;
 }
 /*  Font Awesome 3.0
     the iconic font designed for use with Twitter Bootstrap

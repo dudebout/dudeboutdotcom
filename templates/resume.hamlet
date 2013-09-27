@@ -1,2 +1,45 @@
 <article>
-  #{content}
+  <section>
+    <h1>Education
+    <ul .list-unstyled>
+      $forall sch <- schools
+        <li .institution>
+          #{formatInstitution $ schoolInstitution sch}
+          <ul .list-unstyled>
+            $forall dip <- diplomas sch
+              <li>
+                <div .diploma .clearfix>
+                  <span .pull-right>
+                    #{formatDateRange $ diplomaDates dip}
+                  <span .diploma-title>
+                    #{degree dip}
+                  <span .gpa .hidden-phone>
+                    #{formatGPA dip}
+                $maybe hons <- honors dip
+                  <ul>
+                    $forall hon <- hons
+                      <li>
+                        <div>#{hon}
+  <section>
+    <h1>Experience
+    <ul .list-unstyled>
+      $forall comp <- companies
+        <li .institution>
+          #{formatInstitution $ companyInstitution comp}
+          <ul .list-unstyled>
+            $forall pos <- companyPositions comp
+              <li>
+                <div .clearfix>
+                  <span .pull-right>
+                    #{formatDateRange $ positionDates pos}
+                  <span .position-title>
+                    #{formatRole $ role pos}
+                $maybe accs <- accomplishments pos
+                  <ul>
+                    $forall acc <- accs
+                      <li>#{acc}
+  <section>
+    <h1>Programming Skills
+    <ul>
+      $forall sk <- skills
+        <li>#{sk}

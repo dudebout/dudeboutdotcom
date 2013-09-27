@@ -1,9 +1,0 @@
-<article>
-  <section>
-    <header>
-      <h1>Learning in repeated games
-    <dl>
-      <dt>Objective
-      <dd>Learning equilibria in repeated games with private imperfect monitoring.
-      <dt>Approach
-      <dd>Using regret minimization and reinforcement learning techniques.

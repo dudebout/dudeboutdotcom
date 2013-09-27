@@ -18,7 +18,9 @@ library
                      Settings
                      Settings.StaticFiles
                      Settings.Development
-                     Handler.Simple
+                     Handler.Dispatch
+                     Handler.Generic
+                     Handler.Markdown
                      Handler.Resume
                      Handler.Publications
                      Tools
@@ -67,6 +69,7 @@ library
                  , data-default
                  , aeson
                  , system-filepath
+                 , filepath
                  , blaze-html
                  , blaze-markup
                  , bibtex
@@ -74,6 +77,8 @@ library
                  , highlighting-kate
                  , time
                  , old-locale
+                 , utf8-string
+                 , pandoc                        >= 1.10
 
 executable         dudeboutdotcom
     if flag(library-only)

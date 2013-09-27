@@ -1,7 +1,7 @@
 PATH := ./bootstrap/node_modules/.bin:${PATH}
 
-LESS_BOOTSTRAP := variables mixins normalize scaffolding grid type code component-animations buttons button-groups utilities responsive-utilities responsive-768px-979px responsive-767px-max
-LESS_SPECIFIC := override buttons specific floats links publications
+LESS_BOOTSTRAP := variables mixins normalize scaffolding grid type component-animations buttons button-groups utilities responsive-utilities responsive-768px-979px responsive-767px-max
+LESS_SPECIFIC := override buttons specific floats links publications code
 LESS_ALL = $(addprefix bootstrap/less/, $(LESS_BOOTSTRAP)) $(addprefix specific/, $(LESS_SPECIFIC)) font-awesome/less/font-awesome
 LESS_MODULES = $(addsuffix .less, $(LESS_ALL))
 

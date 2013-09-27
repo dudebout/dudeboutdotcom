@@ -63,7 +63,7 @@ widgetFile = (if development then widgetFileReload
 
 data Extra = Extra
     { extraCopyright :: Text
-    , contentDir :: Text
+    , contentDir :: FilePath
     , extraAnalytics :: Maybe Text -- ^ Google Analytics
     } deriving Show
 

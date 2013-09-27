@@ -6,17 +6,17 @@
     <i .icon-home>
     <span .hidden-phone> Home
 
-  <a :not (Just ResearchR == mcurr):href=@{ResearchR} :Just ResearchR == mcurr:.disabled .btn .btn-custom>
-    <i .icon-cogs>
-    <span .hidden-phone> Research
-
   <a :not (Just ResumeR == mcurr):href=@{ResumeR} :Just ResumeR == mcurr:.disabled .btn .btn-custom>
     <i .icon-list-alt>
-    <span .hidden-phone> Resume
+    <span .hidden-phone> Résumé
 
   <a :not (Just PublicationsR == mcurr):href=@{PublicationsR} :Just PublicationsR == mcurr:.disabled .btn .btn-custom>
     <i .icon-book>
     <span .hidden-phone> Publications
+
+  <a :not (Just CodeR == mcurr):href=@{CodeR} :Just CodeR == mcurr:.disabled .btn .btn-custom>
+    <i .icon-cogs>
+    <span .hidden-phone> Code
 
   <a :not (Just ContactR == mcurr):href=@{ContactR} :Just ContactR == mcurr:.disabled .btn .btn-custom>
     <i .icon-envelope-alt>
@@ -27,4 +27,4 @@
 <footer>
   <p>Copyright © 2009–2013 Nicolas Dudebout. All rights reserved.
   <p>Last updated: #
-    <time datetime="2013-01-04">January 4, 2013
+    <time datetime="2013-03-15">March 15, 2013

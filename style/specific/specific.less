@@ -4,27 +4,43 @@ html {
 
 body {
   padding: 16px;
+  background-image: url('../img/kindajean.png');
   background-color: darken(white, 2%);
   margin-left: auto;
   margin-right: auto;
 }
 
-article > section > :last-child {
-  margin-bottom: 0px;
+p {
+  text-align: justify;
+  margin-bottom: 12px;
 }
 
-article > section:first-child > header > h1 {
+article > section:first-child > h1 {
   margin-top: 0px;
 }
 
-section > header > h1 {
+section > h1 {
   font-size: 24px;
   line-height: 24px;
   margin-bottom: 12px;
   margin-top: 24px;
 }
 
-.institution {
+h2 {
+  font-size: 16px;
+  line-height: 24px;
+  margin-bottom: 0px;
+  margin-top: 24px;
+  font-family: @font-family-serif;
+  font-weight: bold;
+}
+
+.subh2 {
+  font-family: @font-family-sans-serif;
+  font-weight: normal;
+}
+
+.institution, .skillset {
   margin-top: 12px;
 }
 
@@ -45,12 +61,12 @@ article {
 }
 
 footer {
-  text-align: center;
-  font-size: 12px;
-  line-height: 18px;
   margin: 8px;
-  color: @gray;
   p {
+    font-size: 12px;
+    line-height: 18px;
+    color: @gray;
+    text-align: center;
     margin: auto 0px;
   }
 }
@@ -62,10 +78,6 @@ h1 {
 
 strong {
     color: #3f3f3f;
-}
-
-pre {
-  background-color: white;
 }
 
 ul {
@@ -84,8 +96,44 @@ article {
   .box-shadow(@outside-shadow);
 }
 
+
 @ddc-text: #514e54;
 @ddc-bgd: #f5f6f7;
 @ddc-bgd: #eff0f1;
 @ddc-border: #c5c6c7;
 @ddc-accent: #46a546;
+
+// Recreates the illusion of a paragraph from multiple paragraphs and blocks intertwined
+.meta-p {
+  margin-bottom: 12px;
+  > p {
+    margin-bottom: 0;
+  }
+}
+
+section:not(.title) + section {
+  padding-top: 24px;
+}
+
+:last-child {
+  margin-bottom: 0;
+}
+
+:not(h1):first-child {
+  margin-top: 0;
+}
+
+section + section > h1 {
+  margin-top: 0;
+}
+
+.position-title, .diploma-title {
+  font-style: italic;
+  em {
+    font-style: normal;
+  }
+}
+
+.filename {
+  font-family: @font-family-monospace;
+}
