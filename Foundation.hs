@@ -54,9 +54,7 @@ instance Yesod App where
         master <- getYesod
         mmsg <- getMessage
 
-        mcurrSub <- getCurrentRoute
-        toMaster <- getRouteToMaster
-        let mcurr = fmap toMaster mcurrSub
+        mcurr <- getCurrentRoute
 
         -- We break up the default layout into two components:
         -- default-layout is the contents of the body tag, and

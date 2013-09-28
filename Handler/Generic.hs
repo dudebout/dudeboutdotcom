@@ -13,7 +13,6 @@ import qualified Data.Text.Encoding as E
 import Data.Text.Encoding.Error (lenientDecode)
 import Data.ByteString (readFile)
 import System.FilePath ((</>))
-import Text.Blaze.Html (toHtml)
 import Control.Arrow (second)
 
 type Compiler = Text -> Html
@@ -33,7 +32,7 @@ renderFile (comp, fp) = do
   contentRaw <- readFile fp
   return $ comp $ E.decodeUtf8With lenientDecode $ contentRaw
 
-genericHandler :: [Article] -> Text -> Handler RepHtml
+genericHandler :: [Article] -> Text -> Handler Html
 genericHandler articles title = do
   ext <- getExtra
   defaultLayout $ do
