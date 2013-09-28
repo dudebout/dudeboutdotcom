@@ -1,4 +1,5 @@
 /static StaticR Static getStatic
+/files FilesR Static getFiles
 
 /favicon.ico FaviconR GET
 /robots.txt RobotsR GET

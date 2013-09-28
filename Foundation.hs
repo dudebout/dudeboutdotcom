@@ -21,6 +21,7 @@ import System.Log.FastLogger (Logger)
 data App = App
     { settings :: AppConfig DefaultEnv Extra
     , getStatic :: Static -- ^ Settings for static file serving.
+    , getFiles :: Static -- ^ Settings for static file serving.
     , httpManager :: Manager
     , appLogger :: Logger
     }

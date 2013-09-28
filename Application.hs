@@ -9,8 +9,10 @@ import Import
 import Yesod.Default.Config
 import Yesod.Default.Main
 import Yesod.Default.Handlers
+import Yesod.Static (static)
 import Network.Wai.Middleware.RequestLogger
 import Network.HTTP.Conduit (newManager, def)
+import System.FilePath ((</>))
 import System.IO (stdout)
 import System.Log.FastLogger (mkLogger)
 
@@ -50,8 +52,9 @@ makeFoundation :: AppConfig DefaultEnv Extra -> IO App
 makeFoundation conf = do
     manager <- newManager def
     s <- staticSite
+    f <- static $ (contentDir $ appExtra conf) </> "files"
     logger <- mkLogger True stdout
-    let foundation = App conf s manager logger
+    let foundation = App conf s f manager logger
 
     return foundation
 
