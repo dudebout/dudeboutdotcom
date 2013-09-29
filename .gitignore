@@ -1,8 +1,9 @@
-dist*
+dist/
 static/tmp/
 config/client_session_key.aes
 *.hi
 *.o
 *.sqlite3
-.hsenv*
+cabal.sandbox.config
+.cabal-sandbox/
 yesod-devel/
