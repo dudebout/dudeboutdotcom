@@ -15,10 +15,9 @@ import Data.Time.Format (readTime, formatTime)
 import Text.Printf (printf)
 import Data.Maybe (fromJust)
 import Tools
-import Handler.Generic (Composer)
+import Handler.Types (Composer)
 import Handler.Markdown (markdownToHtml)
 import qualified Data.Text.Encoding as E (encodeUtf8)
-
 
 resumeComposer :: Composer
 resumeComposer contentRaw = resumeWidget $ fromJust $ decode $ E.encodeUtf8 contentRaw

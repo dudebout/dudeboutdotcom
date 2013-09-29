@@ -14,7 +14,7 @@ import qualified Text.BibTeX.Format as F
 import Data.Maybe (fromMaybe)
 import Data.List (intersperse, intercalate)
 import Text.Highlighting.Kate (highlightAs, formatHtmlBlock, defaultFormatOpts)
-import Handler.Generic (Composer)
+import Handler.Types (Composer)
 import qualified Data.Text as T (unpack)
 
 publicationsComposer :: Composer

@@ -19,7 +19,7 @@ library
                      Settings.StaticFiles
                      Settings.Development
                      Handler.Dispatch
-                     Handler.Generic
+                     Handler.Types
                      Handler.Markdown
                      Handler.Resume
                      Handler.Publications
