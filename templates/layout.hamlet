@@ -23,8 +23,3 @@
     <span .hidden-phone> Contact
 
 ^{widget}
-
-<footer>
-  <p>Copyright © 2009–2013 Nicolas Dudebout. All rights reserved.
-  <p>Last updated: #
-    <time datetime="2013-03-15">March 15, 2013

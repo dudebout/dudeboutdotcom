@@ -17,6 +17,10 @@ import Data.Aeson.TH
 import Data.Yaml
 import System.FilePath ((</>))
 
+import Data.Text (unpack)
+import Data.Time.Calendar (Day)
+import Data.Time.Format (readTime, formatTime)
+import System.Locale (defaultTimeLocale)
 
 data Article = Article { file     :: FilePath
                        , composer :: Text
@@ -24,15 +28,20 @@ data Article = Article { file     :: FilePath
 data Page = Page { title    :: Text
 		 , articles :: [Article]
                  } deriving Show
+data Footer = Footer { copyright    :: Text
+                     , last_updated :: Text
+                     } deriving Show
 data TOC = TOC { home         :: Page
                , resume       :: Page
                , publications :: Page
                , code         :: Page
                , contact      :: Page
+               , footer       :: Footer
                } deriving Show
 
 $(deriveJSON defaultOptions ''Article)
 $(deriveJSON defaultOptions ''Page)
+$(deriveJSON defaultOptions ''Footer)
 $(deriveJSON defaultOptions ''TOC)
 
 renderArticle :: FilePath -> Article -> IO Widget
@@ -40,27 +49,29 @@ renderArticle dir (Article fp comp) = do
   contentRaw <- B.readFile $ dir </> fp
   return $ getComposer comp $ E.decodeUtf8With lenientDecode $ contentRaw
 
-pageHandler :: Page -> Handler Html
-pageHandler (Page titl arts) = do
+pageHandler :: Page -> Footer -> Handler Html
+pageHandler (Page titl arts) (Footer copy upd) = do
   ext <- getExtra
   defaultLayout $ do
-    setTitle $ toHtml $ T.append titleRoot $ if T.null titl then titl
-                                             else T.append " - " titl
-    widget <- liftIO $ mapM (renderArticle (contentDir ext)) arts
-    sequence_ widget
-      where titleRoot = "Nicolas Dubebout"
+    setTitle $ toHtml $ T.append "Nicolas Dudebout" $ if T.null titl then titl
+                                                      else T.append " - " titl
+    articleWidgets <- liftIO $ mapM (renderArticle (contentDir ext)) arts
+    let day = readTime defaultTimeLocale "%m/%d/%Y" (unpack upd) :: Day
+        updateString = formatTime defaultTimeLocale "%B %e, %Y" day
+        updateDatetime = formatTime defaultTimeLocale "%Y-%m-%d" day
+    footerWidget <- return $(widgetFile "footer")
+    sequence_ $ articleWidgets ++ [footerWidget]
 
 tocEntryHandler :: (TOC -> Page) -> Handler Html
-tocEntryHandler select = do
+tocEntryHandler pageSelect = do
   ext <- getExtra
   toc <- liftIO $ readTOC $ contentDir ext </> "toc.yaml"
-  let page = select toc
-  pageHandler page
+  pageHandler (pageSelect toc) (footer toc)
 
 readTOC :: FilePath -> IO TOC
 readTOC toc = do
   contentRaw <- B.readFile toc
-  return $ fromJust $ decode contentRaw  
+  return $ fromJust $ decode contentRaw
 
 getComposer :: Text -> Composer
 getComposer name = case name of
