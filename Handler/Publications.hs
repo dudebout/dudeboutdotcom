@@ -9,8 +9,7 @@ import qualified Text.Blaze.Html5.Attributes as A (href, class_)
 import Text.Parsec.Text ()
 import Text.Parsec (parse)
 import Text.BibTeX.Parse (splitAuthorList, skippingLeadingSpace, file)
-import Text.BibTeX.Entry (T, entryType, identifier, fields)
-import qualified Text.BibTeX.Format as F
+import Text.BibTeX.Entry (T(Cons), entryType, identifier, fields)
 import Data.Maybe (fromMaybe)
 import Data.List (intersperse, intercalate)
 import Text.Highlighting.Kate (highlightAs, formatHtmlBlock, defaultFormatOpts)
@@ -38,8 +37,18 @@ publicationWidget ent =
       abstract         = entLookup "abstract"
       fieldsNoAbstract = filter (\(x, _) -> not $ x `elem` ["abstract", "repository", "copyright"]) $ fields ent
       bibtex           = toHtml $ formatHtmlBlock defaultFormatOpts
-                        $ highlightAs "bibtex" $ F.entry ent{fields = fieldsNoAbstract}
+                        $ highlightAs "bibtex" $ formatEntry ent{fields = fieldsNoAbstract}
   in $(widgetFile "publication")
+
+formatEntry :: T -> String
+formatEntry (Cons bibType bibId items) = "@" ++ bibType ++ "{" ++ bibId ++ ",\n" ++
+                                         (concat $ intersperse ",\n" $ map formatItem items) ++ "\n}\n"
+
+formatItem :: (String, String) -> String
+formatItem (name, value) = "  "  ++  name ++ " = " ++ enclose value
+    where enclose = if name `elem` ["year", "month"]
+                    then id
+                    else \val -> "\"" ++ val ++ "\""
 
 knownAuthors :: [(String, Html -> Html)]
 knownAuthors = [ ("Dudebout, Nicolas", H.span ! A.class_ "me")
