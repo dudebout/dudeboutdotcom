@@ -1,4 +1,4 @@
 <footer>
-  <p>Copyright © #{copy}, Nicolas Dudebout. All rights reserved.
+  <p>© #{copy}, Nicolas Dudebout.
   <p>Last updated: #
     <time datetime="#{updateDatetime}">#{updateString}
