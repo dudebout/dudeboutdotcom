@@ -57,8 +57,9 @@ knownAuthors = [ ("Dudebout, Nicolas", H.span ! A.class_ "me")
 
 knownEntryTypes :: [(String, T -> String)]
 knownEntryTypes = [ ("MastersThesis", \entry -> "Master's Thesis, " ++ "school" `bibtexLookup` entry)
-                  , ("Misc", miscFormatting)
+                  , ("PhDThesis", \entry -> "PhD Thesis, " ++ "school" `bibtexLookup` entry)
                   , ("InProceedings", ("booktitle" `bibtexLookup`))
+                  , ("Misc", miscFormatting)
                   ]
     where miscFormatting entry = case "howpublished" `bibtexLookup` entry of
                                    "PhD Proposal" -> "PhD Proposal, " ++ "school" `bibtexLookup` entry
